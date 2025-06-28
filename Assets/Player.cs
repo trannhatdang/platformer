@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
 	[SerializeField] float Speed = 0.0f;
 	[SerializeField] float JumpPower = 0.0f;
 	bool facingleft = true;
+	[SerializeField] bool AbleToJump = true;
 	[SerializeField] float velocityY = 0.0f;
 	[SerializeField] Animator anim;
 	
@@ -39,7 +40,7 @@ public class Player : MonoBehaviour
 	    //MOVEMENT
 	    velocityY = rb.velocity.y;
 	    rb.AddForce(new Vector2(Horizontal * Speed * Time.fixedDeltaTime,0));
-	    if(Input.GetKeyDown(KeyCode.Space))
+	    if(Input.GetKeyDown(KeyCode.Space) && AbleToJump)
 	    {
 		    rb.AddForce(new Vector2(0, JumpPower));
 	    }
@@ -55,6 +56,14 @@ public class Player : MonoBehaviour
 		    facingleft = false;
 	    }
 
+		if(Mathf.Abs(Horizontal) > 0.2)
+		{
+			anim.SetBool("Moving", true);
+		}
+		else 
+		{
+			anim.SetBool("Moving", false);
+		}
 
 	    //ANIM
 	    anim.SetFloat("Horizontal", Mathf.Abs(Horizontal));
@@ -77,5 +86,23 @@ public class Player : MonoBehaviour
 		    anim.SetBool("Fall", false);
 	    }
 
+	}
+
+	void OnCollisionEnter2D(Collision2D other)
+	{
+		if(other.gameObject.CompareTag("Ground"))
+		{
+			Debug.Log("HI");
+			AbleToJump = true;
+		}
+	}
+	
+	void OnCollisionExit2D(Collision2D other)
+	{
+		if(other.gameObject.CompareTag("Ground"))
+		{
+			Debug.Log("HI");
+			AbleToJump = false;
+		}
 	}
 }
