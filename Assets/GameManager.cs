@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
 	public static GameManager instance;
 	[SerializeField] Positions positions;
 	[SerializeField] GameObject platform;
+	[SerializeField] GameObject disappearingplatform;
 	[SerializeField] GameObject spike;
+	[SerializeField] int points;
+	[SerializeField] GameObject YouLosePanel;
 	void Awake()
 	{
 		if(instance && instance != this)
@@ -27,6 +31,7 @@ public class GameManager : MonoBehaviour
 	    StartCoroutine(SpikeRoutine());
 	    StartCoroutine(lowerPlatformRoutine());
 	    StartCoroutine(midPlatformRoutine());
+	    StartCoroutine(replacePlatforms());
         
     }
 
@@ -94,19 +99,46 @@ public class GameManager : MonoBehaviour
 		    }
 
 
-		    for(int i = 0; i < 42 * SpikeCount - 1; ++i)
+		    for(int i = 0; i < 42*3; ++i)
 		    {
 			    yield return null;
 		    }
 	    }
     }
 
+    IEnumerator replacePlatforms()
+    {
+	    while(true)
+	    {
+		    for(int i = 0; i < 42 * 3; ++i)
+		    {
+			    yield return null;
+		    }
+
+
+		    GameObject temp = platform;
+		    platform = disappearingplatform;
+
+		    for(int i = 0; i < 42 * 2; ++i)
+		    {
+			    yield return null;
+		    }
+
+		    platform = temp;
+	    }
+    }
+
+
     IEnumerator lowerPlatformRoutine()
     {
 	    while(true)
 	    {
+		    for(int i = 0; i < 8; ++i)
+		    {
+			    yield return null;
+		    }
 		    Instantiate(platform, positions.getLowLeftPlat().transform.position, Quaternion.identity).GetComponent<PlatformSpawner>().setPlatformCount(1);
-		    for(int i = 0; i < 50 * 3; ++i)
+		    for(int i = 0; i < 42 * 3; ++i)
 		    {
 			    yield return null;
 		    }
@@ -133,5 +165,28 @@ public class GameManager : MonoBehaviour
     public float getLeftLimits()
     {
 	    return positions.getLowLeft().transform.position.x;
+    }
+
+    public void AddPoint()
+    {
+	    points++;
+    }
+
+    public int GetPoint()
+    {
+	    return points;
+    }
+
+    public void Die()
+    {
+	    YouLosePanel.SetActive(true);
+	    Destroy(Player.instance.gameObject);
+    }
+
+    public void Restart()
+    {
+	    SceneManager.LoadSceneAsync(0);
+	    points = 0;
+	    YouLosePanel.SetActive(false);
     }
 }

@@ -18,11 +18,11 @@ public class Spikes : MonoBehaviour
     {
 	if(facingRight)
 	{
-		transform.Translate(Vector3.right * Time.fixedDeltaTime);
+		transform.Translate(Vector3.right * Time.fixedDeltaTime * 1.3f);
 	}
 	else
 	{
-		transform.Translate(Vector3.left * Time.fixedDeltaTime);
+		transform.Translate(Vector3.left * Time.fixedDeltaTime * 1.3f);
 	}
 
 	if(Mathf.Abs(transform.position.x) > rightLimit)
@@ -35,5 +35,12 @@ public class Spikes : MonoBehaviour
     public void setFacingRight(bool val)
     {
 	    facingRight = val;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+	    if(!other.gameObject.CompareTag("Player")) return;
+
+	    GameManager.instance.Die();
     }
 }

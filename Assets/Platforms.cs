@@ -5,12 +5,15 @@ using UnityEngine;
 public class Platforms : MonoBehaviour
 {
 	[SerializeField] bool facingRight = true;
-	float rightLimit = 0;
+	[SerializeField] protected GameObject apple;
+	protected float rightLimit = 0;
+
 
     // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
 	    rightLimit = GameManager.instance.getRightLimits();
+	    Instantiate(apple, transform.position, Quaternion.identity, this.transform).transform.position += new Vector3(-.2f, .5f, 0);
     }
 
     // Update is called once per frame

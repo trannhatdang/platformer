@@ -27,6 +27,7 @@ public class Positions : MonoBehaviour
 		{
 			instance = this;
 		}
+		DontDestroyOnLoad(this.gameObject);
 	}
 
 	public GameObject getLowLeft()
