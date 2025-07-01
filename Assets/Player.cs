@@ -67,41 +67,34 @@ public class Player : MonoBehaviour
 
 	    //ANIM
 	    anim.SetFloat("Horizontal", Mathf.Abs(Horizontal));
-	    if(velocityY > 0.5f)
+	    if(velocityY > 0.1f)
 	    {
 		    anim.SetBool("Jump", true);
 		    anim.SetBool("Fall", false);
 		    anim.SetBool("Land", false);
 	    }
-	    else if(velocityY < -0.5f)
+	    else if(velocityY < -0.1f)
 	    {
 		    anim.SetBool("Fall", true);
 		    anim.SetBool("Jump", false);
 		    anim.SetBool("Land", false);
 	    }
-	    else if(Mathf.Abs(velocityY) < 0.5f)
-	    {
-		    anim.SetBool("Land", true);
-		    anim.SetBool("Jump", false);
-		    anim.SetBool("Fall", false);
-	    }
 
 	}
-
 	void OnCollisionEnter2D(Collision2D other)
 	{
 		if(other.gameObject.CompareTag("Ground"))
 		{
-			Debug.Log("HI");
 			AbleToJump = true;
+			anim.SetBool("Land", true);
+			anim.SetBool("Jump", false);
+			anim.SetBool("Fall", false);
 		}
 	}
-	
 	void OnCollisionExit2D(Collision2D other)
 	{
 		if(other.gameObject.CompareTag("Ground"))
 		{
-			Debug.Log("HI");
 			AbleToJump = false;
 		}
 	}
