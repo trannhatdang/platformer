@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Platforms : MonoBehaviour
 {
-	bool facingRight = true;
+	[SerializeField] bool facingRight = true;
+	float rightLimit = 0;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+	    rightLimit = GameManager.instance.getRightLimits();
     }
 
     // Update is called once per frame
@@ -23,6 +25,15 @@ public class Enemy : MonoBehaviour
 		transform.Translate(Vector3.left * Time.fixedDeltaTime);
 	}
 
+	if(Mathf.Abs(transform.position.x) > rightLimit)
+	{
+		Destroy(this.gameObject);
+	}
+
     }
-	    
+
+    public void setFacingRight(bool value)
+    {
+	    facingRight = value;
+    }
 }

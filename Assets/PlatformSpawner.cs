@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpikesSpawner : MonoBehaviour
+public class PlatformSpawner : MonoBehaviour
 {
-	[SerializeField] int spikeCount = 10;
+	[SerializeField] int platformCount = 10;
 	[SerializeField] bool facingRight = true;
-	[SerializeField] GameObject spike;
+	[SerializeField] GameObject platform;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,14 +15,14 @@ public class SpikesSpawner : MonoBehaviour
     // Update is called once per frame
     IEnumerator routine()
     {
-	    for(int i = 0; i < spikeCount; ++i)
+	    for(int i = 0; i < platformCount; ++i)
 	    {
-		    for(int j = 0; j < 42; ++j)
+		    for(int j = 0; j < 200; ++j)
 		    {
 			    yield return null;
 		    }
 
-		    Instantiate(spike, transform.position, transform.rotation).GetComponent<Spikes>().setFacingRight(facingRight);
+		    Instantiate(platform, transform.position, transform.rotation).GetComponent<Platforms>().setFacingRight(facingRight);
 	    }
 
 	    Destroy(this.gameObject);
@@ -31,8 +31,8 @@ public class SpikesSpawner : MonoBehaviour
     {
 	    facingRight = value;
     }
-    public void setSpikeCount(int value)
+    public void setPlatformCount(int value)
     {
-	    spikeCount = value;
+	    platformCount = value;
     }
 }
